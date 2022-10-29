@@ -1,0 +1,68 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@3.2.3
+
+jobs:
+  pytest:
+    docker:
+      # specify the version you desire here
+      - image: cimg/python:3.9
+        auth:
+          username: $DOCKERHUB_USERNAME # context environment variable reference
+          password: $DOCKERHUB_PASSWORD # context environment variable reference
+    # 1vCPU & 2GB = small is too small
+    # 2vCPU & 4GB = medium
+    resource_class: medium
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: |
+            pip install .[dev]
+      - run:
+          name: Run pre-commit checks again
+          command: |
+            pre-commit install
+            pre-commit run --all-files
+      - run:
+          name: Run tests
+          command: |
+            mkdir -p server-test-reports/pytest
+            # --cov --cov-report xml:server-test-reports/coverage.xml  = report test coverage to a file
+            # --junitxml server-test-reports/pytest/tests.xml  = output also in XML to a file (for CircleCI to parse)
+            pytest tests/ -s --cov --cov-report xml:server-test-reports/coverage.xml --junitxml server-test-reports/pytest/tests.xml --log-cli-level ERROR
+
+      - store_test_results:
+          # must be a directory with named subdirectories
+          path: server-test-reports
+
+      - codecov/upload
+
+      - when:
+          condition:
+            equal: [ "master", << pipeline.git.branch >> ]
+          steps:
+            - setup_remote_docker:
+                version: 20.10.14
+                docker_layer_caching: true
+            - run:
+                name: Build Docker images
+                command: |
+                  docker/build.sh
+            - run:
+                name: Push to Dockerhub
+                command: |
+                  docker logout
+                  docker login --username sanogenetics --password $DOCKERHUB_PASSWORD
+                  docker tag snps2vcf:latest sanogenetics/snps2vcf:latest
+                  docker push sanogenetics/snps2vcf:latest
+                  docker logout
+
+
+
+workflows:
+  tests:
+    jobs:
+      - pytest:
+          context:
+            - "docker_hub_creds"

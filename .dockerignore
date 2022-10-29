@@ -1,0 +1,17 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+venv
+.coverage
+.coverage.*
+*.log
+*.egg-info
+.pytest_cache
+.mypy_cache
+.git
+.circleci
+*.vcf
+*.vcf.gz
+*.zip
+tmp

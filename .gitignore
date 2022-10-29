@@ -1,0 +1,8 @@
+venv/
+*.vcf.gz
+*.vcf.gz.tbi
+.DS_Store
+*.egg-info
+**__pycache__
+.vscode
+tmp/
