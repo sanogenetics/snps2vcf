@@ -1,15 +1,15 @@
 from setuptools import setup
 
 setup(
-    name="illumina2vcf",
+    name="snps2vcf",
     version="1.0.0",
     author="Adam Faulconbridge",
     author_email="adam@sanogenetics.com",
-    packages=["illumina2vcf"],
-    description="Converter to turn Illumina final report into a VCF file.",
+    packages=["snps2vcf"],
+    description="Converter to turn D2C genetics files into a VCF file using the snps package.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/sanogenetics/illumina2vcf",
+    url="https://github.com/sanogenetics/snps2vcf",
     install_requires=open("requirements.txt").readlines(),
     extras_require={
         "dev": open("requirements-dev.txt").readlines(),
