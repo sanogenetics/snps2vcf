@@ -1,6 +1,7 @@
-
 from io import StringIO
+
 from snps2vcf import Converter
+
 
 class TestSnps:
     def test_converter(self):
