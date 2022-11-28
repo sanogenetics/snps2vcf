@@ -8,3 +8,10 @@ venv/
 .coverage
 tmp/
 .idea
+
+output
+resources
+
+htmlcov
+!tests/output/
+!tests/output/vcf_generic.vcf
