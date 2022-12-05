@@ -9,7 +9,7 @@ usage
 To use, pipe input into the process and pipe the output somewhere. e.g.
 
 ```
-python -m snps2vcf <input.txt.gz >output.vcf
+python -m snps2vcf <input.txt >output.vcf
 ```
 
 development
@@ -76,6 +76,12 @@ docker/build.sh
 Note: `--rm` means to remove intermediate containers after a build. You may want to omit this if developing locally to utilize docker layer caching.
 
 Note: `--progress=plain` may be useful to see all intermediate step logs.
+
+To use, pipe input into the container and pipe the output somewhere. e.g.
+
+```
+docker run -i snps2vcf bash run.sh <input.txt >output.vcf
+```
 
 Push to AWS ECR with:
 

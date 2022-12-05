@@ -9,6 +9,4 @@ set -u
 
 # TODO optionally integrate with AWS S3
 
-python3.9 -m snps2vcf ${@:3} <$1 | bcftools sort -Oz >$2
-
-tabix $2
+python3.9 -m snps2vcf <&0 >&1
