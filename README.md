@@ -1,7 +1,9 @@
-SNPs2VCF
+snps2vcf
 ========
 
-This is tool for converting direct-to-consumer microarray results into VCF files.
+`snps2vcf` is a tool for converting direct-to-consumer microarray results into
+[VCF](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3137218/) files using the
+[`snps`](https://pypi.org/project/snps/) package.
 
 usage
 -----
@@ -102,3 +104,8 @@ docker logout
 ```
 
 Note: will prompt for password.
+
+acknowledgements
+----------------
+`snps2vcf` incorporates code and concepts generated with the assistance of
+[OpenAI's](https://openai.com) [ChatGPT](https://chatgpt.com). ✨
