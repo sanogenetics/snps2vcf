@@ -3,10 +3,6 @@
 # those compatible with requirements.txt
 
 pytest-cov
-flake8
-black
-pylint
+ruff
 mypy
 pip-tools
-pipdeptree
-pre-commit

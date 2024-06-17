@@ -30,15 +30,6 @@ pip-sync requirements.txt requirements-dev.txt
 # Install editable with development extras
 pip install -e '.[dev]'
 
-# before making any commits
-# Enable pre-commit hooks
-pre-commit install
-# Run pre-commit hooks without committing
-pre-commit run --all-files
-# Note pre-commit is configured to use:
-# - isort to sort imports
-# - black to format code
-
 # before making any code changes
 # Run tests
 pytest
@@ -53,8 +44,6 @@ pip-compile
 # Freeze dev dependencies
 pip-compile requirements-dev.in
 # then run pip-sync again to install them!
-# Print dependencies
-pipdeptree
 ```
 
 Global git ignores per https://help.github.com/en/github/using-git/ignoring-files#configuring-ignored-files-for-all-repositories-on-your-computer
