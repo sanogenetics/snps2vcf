@@ -27,14 +27,16 @@ source venv/bin/activate
 pip install pip-tools
 # Install exact requirements
 pip-sync requirements.txt requirements-dev.txt
-# Install editable with development extras
+# Install editable snps2vcf with development extras
 pip install -e '.[dev]'
 
 # before making any code changes
 # Run tests
-pytest
-# Run tests, print coverage
-coverage run -m pytest && coverage report -m
+pytest --cov-report=html --cov=snps2vcf tests
+# Linting
+ruff check --fix
+# Formatting
+ruff format
 # Type checking
 mypy snps2vcf
 
