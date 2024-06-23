@@ -38,7 +38,7 @@ ruff check --fix
 # Formatting
 ruff format
 # Type checking
-mypy snps2vcf
+mypy --strict snps2vcf
 
 # after making any dependency changes
 # Freeze dependencies
