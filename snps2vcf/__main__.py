@@ -1,3 +1,4 @@
+import io
 import logging
 import sys
 
@@ -11,4 +12,9 @@ if __name__ == "__main__":
     # read from stdin
     # write to stdout as uncompressed vcf
     converter = Converter()
-    converter.convert(sys.stdin, sys.stdout)
+
+    # Create TextIOWrapper objects from the existing streams
+    stdin_wrapper = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8")
+    stdout_wrapper = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+
+    converter.convert(stdin_wrapper, stdout_wrapper)

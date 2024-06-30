@@ -1,7 +1,11 @@
-SNPs2VCF
+[![CI](https://github.com/sanogenetics/snps2vcf/actions/workflows/ci.yml/badge.svg)](https://github.com/sanogenetics/snps2vcf/actions/workflows/ci.yml) [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+snps2vcf
 ========
 
-This is tool for converting direct-to-consumer microarray results into VCF files.
+`snps2vcf` is a tool for converting direct-to-consumer microarray results into
+[VCF](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3137218/) files using the
+[`snps`](https://pypi.org/project/snps/) package.
 
 usage
 -----
@@ -25,25 +29,18 @@ source venv/bin/activate
 pip install pip-tools
 # Install exact requirements
 pip-sync requirements.txt requirements-dev.txt
-# Install editable with development extras
+# Install editable snps2vcf with development extras
 pip install -e '.[dev]'
-
-# before making any commits
-# Enable pre-commit hooks
-pre-commit install
-# Run pre-commit hooks without committing
-pre-commit run --all-files
-# Note pre-commit is configured to use:
-# - isort to sort imports
-# - black to format code
 
 # before making any code changes
 # Run tests
-pytest
-# Run tests, print coverage
-coverage run -m pytest && coverage report -m
+pytest --cov-report=html --cov=snps2vcf tests
+# Linting
+ruff check --fix
+# Formatting
+ruff format
 # Type checking
-mypy snps2vcf
+mypy --strict snps2vcf
 
 # after making any dependency changes
 # Freeze dependencies
@@ -51,8 +48,6 @@ pip-compile
 # Freeze dev dependencies
 pip-compile requirements-dev.in
 # then run pip-sync again to install them!
-# Print dependencies
-pipdeptree
 ```
 
 Global git ignores per https://help.github.com/en/github/using-git/ignoring-files#configuring-ignored-files-for-all-repositories-on-your-computer
@@ -102,3 +97,8 @@ docker logout
 ```
 
 Note: will prompt for password.
+
+acknowledgements
+----------------
+`snps2vcf` incorporates code and concepts generated with the assistance of
+[OpenAI's](https://openai.com) [ChatGPT](https://chatgpt.com). ✨

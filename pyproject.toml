@@ -1,9 +1,7 @@
-[tool.black]
-line-length = 120
+[[tool.mypy.overrides]]
+module = "snps.*"
+ignore_missing_imports = true
 
-[tool.isort]
-profile = "black"
-
-[tool.coverage.run]
-source = ['snps2vcf']
-omit = [ 'venv/*', 'tests/*', 'run/*' ]
+# https://github.com/astral-sh/ruff/issues/465#issuecomment-1783684428
+[tool.ruff.lint]
+extend-select = ["I"]

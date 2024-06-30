@@ -1,3 +1,4 @@
+import io
 import os
 import tempfile
 
@@ -5,17 +6,11 @@ from snps import SNPs
 
 
 class Converter:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
-    def convert(self, input, output):
-        """Convert input to Build 38 VCF output
-
-        Parameters
-        ----------
-        input : io.TextIOWrapper
-        output : io.TextIOWrapper
-        """
+    def convert(self, input: io.TextIOWrapper, output: io.TextIOWrapper) -> None:
+        """Convert input to Build 38 VCF output."""
         s = SNPs(bytes(input.read(), encoding="utf-8"))
 
         if not s.valid:
