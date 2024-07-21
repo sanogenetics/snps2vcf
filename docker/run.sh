@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 set -x
 set -u
@@ -9,4 +9,4 @@ set -u
 
 # TODO optionally integrate with AWS S3
 
-python3.9 -m snps2vcf <&0 >&1
+. venv/bin/activate && python3.12 -m snps2vcf <&0 >&1

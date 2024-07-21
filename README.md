@@ -62,20 +62,16 @@ To add a new dependency, add to `requirements.in` then run `pip-compile`
 docker
 ------
 
-To build this container, use a command like:
+To build this container, use the following command:
 
 ```
 docker/build.sh
 ```
 
-Note: `--rm` means to remove intermediate containers after a build. You may want to omit this if developing locally to utilize docker layer caching.
-
-Note: `--progress=plain` may be useful to see all intermediate step logs.
-
 To use, pipe input into the container and pipe the output somewhere. e.g.
 
 ```
-docker run -i snps2vcf bash run.sh <input.txt >output.vcf
+docker run --rm -i snps2vcf sh run.sh <input.txt >output.vcf
 ```
 
 Push to AWS ECR with:
