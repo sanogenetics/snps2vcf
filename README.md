@@ -13,7 +13,7 @@ usage
 To use, pipe input into the process and pipe the output somewhere. e.g.
 
 ```
-python -m snps2vcf <input.txt >output.vcf
+python -m snps2vcf < input.txt.gz > output.vcf
 ```
 
 development
