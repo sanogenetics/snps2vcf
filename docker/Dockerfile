@@ -1,33 +1,40 @@
-# use base image that already has AWS CLI & HTSLIB+SAMTools+VCFTools
-FROM sanogenetics/htslib-bcftools-samtools:latest
+# Stage 1: Build environment to download resources
+FROM python:3.12-alpine AS builder
 
 WORKDIR /app
-# install Python & other dependencies
-RUN apt-get update \
-  && apt-get install -y \
-    python3.9 \
-    python3.9-distutils
-ADD https://bootstrap.pypa.io/get-pip.py get-pip.py
-RUN python3.9 get-pip.py
 
-# install requirements ahead of main code
-# not strictly necessary but uses Docker layer caching for faster repeat building
+# Create a virtual environment and install snps to download resources
+RUN python -m venv venv \
+  && . venv/bin/activate \
+  && pip install --no-cache-dir snps==2.8.2
+
+# Copy and run the script to download resources
+COPY docker/setup_container.py .
+RUN . venv/bin/activate && python setup_container.py
+
+# Stage 2: Final image
+FROM python:3.12-alpine
+
+WORKDIR /app
+
+# Copy the downloaded resources from the build stage
+COPY --from=builder /app/resources /app/resources
+
+# Create a virtual environment for the main application
+RUN python -m venv venv
+
+# Install requirements
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN . venv/bin/activate && pip install --no-cache-dir -r requirements.txt
 
-# install the actual code
+# Install the actual code
 COPY snps2vcf ./snps2vcf
 COPY setup.py .
 COPY README.md .
 COPY requirements-dev.txt .
-RUN pip install .
+RUN . venv/bin/activate && pip install --no-cache-dir .
 
-# install resources
-COPY docker/setup_container.py .
-RUN python3.9 setup_container.py
-
-# add the wrapper script
-#ENV AWS_CLI_ARGS=
+# Add the wrapper script
 COPY docker/run.sh .
 
-CMD ["bash", "run.sh"]
+CMD ["sh", "run.sh"]
