@@ -13,7 +13,7 @@ usage
 To use, pipe input into the process and pipe the output somewhere. e.g.
 
 ```
-python -m snps2vcf <input.txt >output.vcf
+python -m snps2vcf < input.txt.gz > output.vcf
 ```
 
 development
@@ -68,10 +68,18 @@ To build this container, use the following command:
 docker/build.sh
 ```
 
-To use, pipe input into the container and pipe the output somewhere. e.g.
+Input and output to the container can be passed either via `stdin` / `stdout`
+or by mapping the local filesystem to the container and passing file arguments.
+Both options create the output file (`output.vcf`) in the current directory.
 
+**Using `stdin` / `stdout`**
 ```
-docker run --rm -i snps2vcf sh run.sh <input.txt >output.vcf
+docker run --rm -i snps2vcf sh run.sh < input.txt.gz > output.vcf
+```
+
+**Using File Arguments**
+```
+docker run --rm -v $(pwd)/input.txt.gz:/app/input.txt.gz -v $(pwd):/app/output_dir snps2vcf sh run.sh /app/input.txt.gz /app/output_dir/output.vcf
 ```
 
 Push to AWS ECR with:

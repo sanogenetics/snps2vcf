@@ -1,6 +1,6 @@
-import io
 import os
 import tempfile
+from typing import BinaryIO
 
 from snps import SNPs
 
@@ -9,9 +9,9 @@ class Converter:
     def __init__(self) -> None:
         pass
 
-    def convert(self, input: io.TextIOWrapper, output: io.TextIOWrapper) -> None:
+    def convert(self, input: BinaryIO, output: BinaryIO) -> None:
         """Convert input to Build 38 VCF output."""
-        s = SNPs(bytes(input.read(), encoding="utf-8"))
+        s = SNPs(input.read())
 
         if not s.valid:
             return
@@ -30,8 +30,8 @@ class Converter:
         # write VCF to temp file
         s.to_vcf(tmp_path, chrom_prefix="chr")
 
-        # output temp file
-        with open(tmp_path, "r") as f:
+        # output temp file as binary
+        with open(tmp_path, "rb") as f:
             output.write(f.read())
 
         os.remove(tmp_path)
