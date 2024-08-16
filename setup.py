@@ -1,8 +1,11 @@
 from setuptools import setup
 
+import versioneer
+
 setup(
     name="snps2vcf",
-    version="1.0.0",
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author="Adam Faulconbridge, Andrew Riha",
     author_email="adam@sanogenetics.com, andrew@sanogenetics.com",
     packages=["snps2vcf"],
