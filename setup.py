@@ -3,8 +3,8 @@ from setuptools import setup
 setup(
     name="snps2vcf",
     version="1.0.0",
-    author="Adam Faulconbridge",
-    author_email="adam@sanogenetics.com",
+    author="Adam Faulconbridge, Andrew Riha",
+    author_email="adam@sanogenetics.com, andrew@sanogenetics.com",
     packages=["snps2vcf"],
     description="Converter to turn D2C genetics files into a VCF file using the snps package.",
     long_description=open("README.md").read(),
