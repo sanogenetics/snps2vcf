@@ -65,7 +65,7 @@ jobs:
       run: |
         pytest --cov=snps2vcf tests
 
-  build_snps2vcf:
+  build-image:
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.base_ref == 'main') }}
     needs: [test]
     runs-on: ubuntu-latest
@@ -81,10 +81,12 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.ECR_ROLE_ARN }}
-          aws-region: eu-west-2
+          aws-region: us-east-1
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
         id: login-ecr
+        with:
+          registry-type: public
       - uses: docker/setup-buildx-action@v3
         with:
           platforms: linux/amd64
@@ -92,12 +94,25 @@ jobs:
         run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         id: git_sha
       - uses: docker/build-push-action@v6
-        name: Build snps2vcf Docker Image
+        name: Build image for trivy
+        with:
+          context: .
+          file: ./docker/Dockerfile
+          load: true
+          tags: 'snps2vcf:test'
+          provenance: false
+      - name: Run Trivy vulnerability scanner
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: 'snps2vcf:test'
+      - uses: docker/build-push-action@v6
+        name: Build from cache and push
         with:
           context: .
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           file: ./docker/Dockerfile
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/snps2vcf:sha-${{ steps.git_sha.outputs.short_sha }}
-            ${{ steps.login-ecr.outputs.registry }}/snps2vcf:latest
+            ${{ secrets.REGISTRY }}/snps2vcf:sha-${{ steps.git_sha.outputs.short_sha }}
+            ${{ secrets.REGISTRY }}/snps2vcf:latest
           provenance: false
