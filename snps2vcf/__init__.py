@@ -4,6 +4,10 @@ from typing import BinaryIO
 
 from snps import SNPs
 
+from . import _version
+
+__version__ = _version.get_versions()["version"]
+
 
 class Converter:
     def __init__(self) -> None:

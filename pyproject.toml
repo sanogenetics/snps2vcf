@@ -1,3 +1,7 @@
+[tool.mypy]
+exclude = '/_version\.py$'
+follow_imports = "skip"
+
 [[tool.mypy.overrides]]
 module = "snps.*"
 ignore_missing_imports = true
