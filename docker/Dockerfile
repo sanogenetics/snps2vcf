@@ -32,6 +32,8 @@ COPY snps2vcf ./snps2vcf
 COPY setup.py .
 COPY README.md .
 COPY requirements-dev.txt .
+COPY setup.cfg .
+COPY versioneer.py .
 RUN . venv/bin/activate && pip install --no-cache-dir .
 
 # Add the wrapper script
