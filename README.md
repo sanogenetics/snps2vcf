@@ -82,26 +82,6 @@ docker run --rm -i snps2vcf sh run.sh < input.txt.gz > output.vcf
 docker run --rm -v $(pwd)/input.txt.gz:/app/input.txt.gz -v $(pwd):/app/output_dir snps2vcf sh run.sh /app/input.txt.gz /app/output_dir/output.vcf
 ```
 
-Push to AWS ECR with:
-
-```
-aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 244834673510.dkr.ecr.eu-west-2.amazonaws.com
-docker tag snps2vcf:latest 244834673510.dkr.ecr.eu-west-2.amazonaws.com/snps2vcf:latest
-docker push 244834673510.dkr.ecr.eu-west-2.amazonaws.com/snps2vcf:latest
-docker logout
-```
-
-Push to DockerHub with:
-
-```
-docker login --username sanogenetics
-docker tag snps2vcf:latest sanogenetics/snps2vcf:latest
-docker push sanogenetics/snps2vcf:latest
-docker logout
-```
-
-Note: will prompt for password.
-
 acknowledgements
 ----------------
 `snps2vcf` incorporates code and concepts generated with the assistance of
