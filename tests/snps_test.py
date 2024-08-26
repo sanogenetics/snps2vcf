@@ -38,32 +38,44 @@ class TestSnps(TestCase):
             with patch("snps.resources.Resources.get_reference_sequences", mock1):
                 with patch("snps.SNPs.build", mock2):
                     with patch("snps.SNPs.remap", mock3):
-                        if use_filesystem:
-                            # Write input to a temporary file
-                            input_file = (
-                                Path(tmpdir) / "input.csv.gz"
-                                if compress_input
-                                else Path(tmpdir) / "input.csv"
-                            )
-                            with input_file.open("wb") as infile:
-                                infile.write(in_data.getvalue())
+                        with patch("snps.SNPs.compute_cluster_overlap") as mock_compute:
+                            with patch(
+                                "snps.SNPs.identify_low_quality_snps"
+                            ) as mock_identify:
+                                if use_filesystem:
+                                    # Write input to a temporary file
+                                    input_file = (
+                                        Path(tmpdir) / "input.csv.gz"
+                                        if compress_input
+                                        else Path(tmpdir) / "input.csv"
+                                    )
+                                    with input_file.open("wb") as infile:
+                                        infile.write(in_data.getvalue())
 
-                            # Define output file
-                            output_file = Path(tmpdir) / "output.vcf"
+                                    # Define output file
+                                    output_file = Path(tmpdir) / "output.vcf"
 
-                            # Run converter with file paths
-                            Converter().convert(
-                                input_file.open("rb"), output_file.open("wb")
-                            )
+                                    # Run converter with file paths
+                                    Converter().convert(
+                                        input_file.open("rb"), output_file.open("wb")
+                                    )
 
-                            # Read and compare output from file
-                            with output_file.open("rb") as outfile:
-                                output = outfile.read()
+                                    # Read and compare output from file
+                                    with output_file.open("rb") as outfile:
+                                        output = outfile.read()
 
-                        else:
-                            # Run converter with stdin and stdout
-                            Converter().convert(in_data, output)
-                            output = output.getvalue()
+                                else:
+                                    # Run converter with stdin and stdout
+                                    Converter().convert(in_data, output)
+                                    output = output.getvalue()
+
+                                # Check that the mocked methods were called
+                                if build == 37:
+                                    mock_compute.assert_called_once()
+                                    mock_identify.assert_called_once()
+                                else:
+                                    mock_compute.assert_not_called()
+                                    mock_identify.assert_not_called()
 
                     # Read expected result
                     with open("tests/output/vcf_generic.vcf", "rb") as f:

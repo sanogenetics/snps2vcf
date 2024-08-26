@@ -8,11 +8,11 @@ build==1.2.1
     # via pip-tools
 click==8.1.7
     # via pip-tools
-coverage[toml]==7.6.0
+coverage[toml]==7.6.1
     # via pytest-cov
 iniconfig==2.0.0
     # via pytest
-mypy==1.11.0
+mypy==1.11.2
     # via -r requirements-dev.in
 mypy-extensions==1.0.0
     # via mypy
@@ -28,15 +28,15 @@ pyproject-hooks==1.1.0
     # via
     #   build
     #   pip-tools
-pytest==8.2.2
+pytest==8.3.2
     # via pytest-cov
 pytest-cov==5.0.0
     # via -r requirements-dev.in
-ruff==0.5.3
+ruff==0.6.2
     # via -r requirements-dev.in
 typing-extensions==4.12.2
     # via mypy
-wheel==0.43.0
+wheel==0.44.0
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:

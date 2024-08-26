@@ -24,6 +24,11 @@ class Converter:
         if s.build == 36:
             s.remap(37)
 
+        # attempt to get chip information for Build 36 and 37 files
+        if s.build == 37:
+            s.compute_cluster_overlap()
+            s.identify_low_quality_snps()
+
         if s.build == 37:
             s.remap(38)
 
@@ -32,7 +37,12 @@ class Converter:
         os.close(fd)
 
         # write VCF to temp file
-        s.to_vcf(tmp_path, chrom_prefix="chr")
+        if s._cluster_overlap_computed and s._cluster:
+            s.to_vcf(
+                tmp_path, chrom_prefix="chr", qc_filter=True
+            )  # chip cluster exists, so include chip info
+        else:
+            s.to_vcf(tmp_path, chrom_prefix="chr")
 
         # output temp file as binary
         with open(tmp_path, "rb") as f:
